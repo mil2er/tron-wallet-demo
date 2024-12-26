@@ -1,0 +1,24 @@
+coin:
+  rpc: https://test-tron.oxcoin.co/
+  name: TRON_USDT
+  unit: USDT
+  keystore-path: ./keystore/
+  withdraw-wallet: UTC--2024-12-17T13-08-46.644000000Z--TFWCgEouJUC1bHLMfjdzLQdXPeiCE1byfw #提币钱包
+  withdraw-wallet-password: a12345678! #提币钱包密码
+
+#####合约配置信息#####
+# contract.address: 
+# TXYZopYRdj2D9XRtbG411XZZ3kM5VkAeBf
+# 41eca9bc828a3005b9a3b909f2cc5c2a54794de05f
+# TRC20 USDT
+contract:
+  address: "TXYZopYRdj2D9XRtbG411XZZ3kM5VkAeBf"  # "TVfi96PXjv1RySUeZ39eSQqJmLnr9frroK"
+  decimals: 6  #合约精度,根据合约decimals参数取相应的单位名称 #wei:0,kwei:3,wwei:4,mwei:6,lwei 8,gwei:9,szabo:12,finney:15,ether:18,kether:21,mether:24,gether:27
+  gas-limit: 10000000 # 每次转账trc20合约燃烧的能量 单位sun 默认5trx
+#contract.event-topic0: xxx
+#etherscan.token: xxx
+watcher:
+  init-block-height: 52845320
+  step: 10
+  confirmation: 2
+  interval: 10000
