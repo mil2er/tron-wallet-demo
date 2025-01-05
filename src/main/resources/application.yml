@@ -1,0 +1,20 @@
+server:
+  port: 9000
+spring:
+  profiles:
+    active: @profile.active@
+  #    active: local
+  application:
+    name: tron_wallet
+
+logging:
+  file:
+    name: "/data/logs/tron_wallet/tron_wallet.log"
+  level:
+    org:
+      springframework:
+        security: ERROR
+      tron:
+        sdk: WARN
+    tron:
+      wallet: debug
