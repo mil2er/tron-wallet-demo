@@ -9,9 +9,11 @@ import java.nio.charset.StandardCharsets;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.spongycastle.util.encoders.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 // import org.springframework.stereotype.Service;
@@ -19,8 +21,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 
+import org.tron.common.utils.ByteArray;
 import org.tron.sdk.TronApi;
 import org.tron.utils.TronUtils;
+import org.web3j.abi.FunctionEncoder;
+import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.Type;
 import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.utils.Convert;
 
@@ -29,6 +35,7 @@ import tron.wallet.entity.Contract;
 import tron.wallet.entity.Payment;
 import tron.wallet.util.AES;
 import tron.wallet.util.Wallet;
+import tron.wallet.util.HttpUtils;
 
 @Slf4j
 @Component
@@ -177,6 +184,32 @@ public class TronService {
    */
   public String getTransactionInfo(String txid) throws IOException {
     return tronApi.getTransactionInfo(txid);
+  }
+
+  public String estimateEnergy(Payment payment) throws IOException {
+    String ownerAddress = TronUtils.getAddressByPrivateKey(payment.getWallet().getPrivateKey());
+    Address toAddress = new Address(TronUtils.toHexAddress(payment.getTo()).substring(2));
+    JSONObject txObj = new JSONObject();
+    if (contract.getAddress().startsWith("T")) txObj.put("visible", true);
+    txObj.put("owner_address", ownerAddress);
+    txObj.put("contract_address", contract.getAddress());
+    txObj.put("function_selector", "transfer(address,uint256)");
+    List<Type> params = new ArrayList<>();
+    params.add(toAddress);
+    params.add(new Uint256(payment.getAmount().toBigInteger()));
+    String parameter = FunctionEncoder.encodeConstructor(params);
+    txObj.put("parameter", parameter);
+    log.warn("txObj: {}", txObj.toString());
+
+    String tronUrl = TronApi.tronUrl;
+    if(tronUrl.endsWith("/")){
+			tronUrl = tronUrl.substring(0,tronUrl.length() - 1);
+		}
+
+		String url = tronUrl + "/wallet/estimateenergy";
+		String result = HttpUtils.postJson(url, txObj.toString());
+    log.warn("parameter: {}", parameter);
+    return result;
   }
 
 }

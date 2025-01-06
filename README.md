@@ -166,6 +166,21 @@ TRON network, Wallet, Demo, SpringBoot
               }]
           }
   ```
+* 估算交易需要消耗的能量
+  ```
+  curl -XPOST http://127.0.0.1:9000/demo/transferUsdt/TWgezbnYkrQrWJY4tv2vbftyvUwaM9r7s1/1000000/energy
+  response:
+      {
+          "code":0,
+          "message":"success",
+          "data":{
+              "result":{
+                  "result":true
+              },
+              "energy_required":18313
+          }
+      }
+  ```
 
 # Java 语言版本波场SDK 简要说明
 

@@ -150,6 +150,31 @@ public class TronController {
   }
 
   /**
+   * USDT 转账
+   * 
+   * @param toAddress
+   * @param amount
+   * @return
+   */
+  @PostMapping("transferUsdt/{toAddress}/{amount}/energy")
+  public MessageResult transferUsdtEnergy(@PathVariable String toAddress, @PathVariable BigDecimal amount) {
+    try {
+      Wallet wallet = Wallet.getWallet(coin);
+      Payment pay = Payment.builder().wallet(wallet).to(toAddress).amount(amount).build();
+      String result =
+          tronService.estimateEnergy(pay);
+      JSONObject energyObj = JSONObject.parseObject(result);
+      MessageResult ret = new MessageResult(0, "success");
+      ret.setData(energyObj);
+      log.info("response: {}", ret);
+      return ret;
+    } catch (Throwable e) {
+      log.error(e.getMessage(), e);
+      return MessageResult.error(500, "error: " + e.getMessage());
+    }
+  }
+
+  /**
    * 查询交易数据
    * curl -XGET http://127.0.0.1:7004/tron/tx/522d80315b8534816876d8d4996c6f818d13fe76c7a4780cd536fe130eb00118
    * {
