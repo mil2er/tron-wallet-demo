@@ -150,7 +150,7 @@ public class TronController {
   }
 
   /**
-   * USDT 转账
+   * 估算USDT 转账交易所需能量
    * 
    * @param toAddress
    * @param amount
@@ -163,6 +163,48 @@ public class TronController {
       Payment pay = Payment.builder().wallet(wallet).to(toAddress).amount(amount).build();
       String result =
           tronService.estimateEnergy(pay);
+      JSONObject energyObj = JSONObject.parseObject(result);
+      MessageResult ret = new MessageResult(0, "success");
+      ret.setData(energyObj);
+      log.info("response: {}", ret);
+      return ret;
+    } catch (Throwable e) {
+      log.error(e.getMessage(), e);
+      return MessageResult.error(500, "error: " + e.getMessage());
+    }
+  }
+
+  /**
+   * 查询能量价格
+   * 
+   * @return
+   */
+  @GetMapping("energyPrices")
+  public MessageResult getEnergyPrices() {
+    try {
+      String result =
+          tronService.getEnergyPrices();
+      JSONObject energyObj = JSONObject.parseObject(result);
+      MessageResult ret = new MessageResult(0, "success");
+      ret.setData(energyObj);
+      log.info("response: {}", ret);
+      return ret;
+    } catch (Throwable e) {
+      log.error(e.getMessage(), e);
+      return MessageResult.error(500, "error: " + e.getMessage());
+    }
+  }
+
+  /**
+   * 查询带宽价格
+   *
+   * @return
+   */
+  @GetMapping("bandwidthPrices")
+  public MessageResult getBandwidthPrices() {
+    try {
+      String result =
+          tronService.getBandwidthPrices();
       JSONObject energyObj = JSONObject.parseObject(result);
       MessageResult ret = new MessageResult(0, "success");
       ret.setData(energyObj);

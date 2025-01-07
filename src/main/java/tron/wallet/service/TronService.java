@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 // import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+
+import io.netty.handler.codec.http.HttpMethod;
 import lombok.extern.slf4j.Slf4j;
 
 import org.tron.common.utils.ByteArray;
@@ -212,5 +214,24 @@ public class TronService {
     return result;
   }
 
+  public String getEnergyPrices() throws IOException {
+    String tronUrl = TronApi.tronUrl;
+    if(tronUrl.endsWith("/")){
+			tronUrl = tronUrl.substring(0,tronUrl.length() - 1);
+		}
+		String url = tronUrl + "/wallet/getenergyprices";
+		String result = HttpUtils.request(url, HttpMethod.GET);
+    return result;
+  }
+
+  public String getBandwidthPrices() throws IOException {
+    String tronUrl = TronApi.tronUrl;
+    if(tronUrl.endsWith("/")){
+			tronUrl = tronUrl.substring(0,tronUrl.length() - 1);
+		}
+		String url = tronUrl + "/wallet/getbandwidthprices";
+		String result = HttpUtils.request(url, HttpMethod.GET);
+    return result;
+  }
 }
 
