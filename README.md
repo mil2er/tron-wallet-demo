@@ -167,7 +167,7 @@ TRON network, Wallet, Demo, SpringBoot
           }
   ```
 * 估算交易需要消耗的能量
-  ```
+  ```shell
   curl -XPOST http://127.0.0.1:9000/demo/transferUsdt/TWgezbnYkrQrWJY4tv2vbftyvUwaM9r7s1/1000000/energy
   response:
       {
@@ -178,6 +178,36 @@ TRON network, Wallet, Demo, SpringBoot
                   "result":true
               },
               "energy_required":18313
+          }
+      }
+  ```
+* 查询平台能量报价
+  ```shell
+  注意：
+    返回结果是以逗号分割的报价列表；
+    冒号前是毫秒时间戳，冒号后是以SUN为单位的价格；
+  curl -XGET http://127.0.0.1:9000/demo/energyPrices
+  response:
+      {
+          "code":0,
+          "message":"success",
+          "data":{
+              "prices":"0:100,1572597600000:10,1606282800000:40,1612768800000:140,1612769400000:140,1612778400000:140,1628674200000:420,1635143400000:280,1669603800000:420,1726283400000:210"
+          }
+      }
+  ```
+* 查询平台带宽报价
+  ```shell
+  注意：
+    返回结果是以逗号分割的报价列表；
+    冒号前是毫秒时间戳，冒号后是以SUN为单位的价格；
+  curl -XGET "http://127.0.0.1:9000/demo/bandwidthPrices"
+  response:
+      {
+          "code":0,
+          "message":"success",
+          "data":{
+              "prices":"0:10,1606282800000:40,1612778400000:140,1625815200000:100,1626253800000:1000"
           }
       }
   ```
